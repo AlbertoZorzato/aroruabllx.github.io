@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>aroruabllx</title>
+  <title>My Image Gallery</title>
   <style>
     /* Reset */
     * {
@@ -13,22 +13,26 @@
 
     /* Body style */
     body {
-      font-family: Arial, sans-serif;
       background: #f2f2f2;
       color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      font-family: Arial, sans-serif;
       min-height: 100vh;
+      margin: 0;
       padding: 20px;
     }
 
-    /* Title (optional) */
-    h1 {
+    /* Wrapper to center content */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;  /* This centers the container */
       text-align: center;
-      margin-bottom: 20px;
+    }
+
+    /* Title */
+    h1 {
+      margin-bottom: 30px;
       font-weight: 400;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       color: #444;
     }
 
@@ -37,41 +41,39 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
-      max-width: 1200px;
       width: 100%;
     }
 
     /* Images */
     .gallery img {
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 1/1;
       object-fit: cover;
       border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     /* Hover effect */
     .gallery img:hover {
       transform: scale(1.03);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.15);
     }
-
   </style>
 </head>
 <body>
 
-  <!-- Optional Title -->
-  <h1>Image Gallery</h1> 
-
-  <div class="gallery">
-    <!-- Replace with your image paths or URLs -->
-    <img src="1.jpg" alt="zio" />
-    <img src="2.jpg" alt="" ziooo/>
-    <img src="3.jpg" alt="Image 3" />
-    <img src="4.jpg" alt="Image 4" />
-    <img src="5.jpg" alt="Image 5" />
-    <img src="6.jpg" alt="Image 6" />
+  <div class="container">
+    <h1>Image Gallery</h1>
+    <div class="gallery">
+      <!-- Replace with 1.jpg, 2.jpg, etc. -->
+      <img src="1.jpg" alt="Image 1">
+      <img src="2.jpg" alt="Image 2">
+      <img src="3.jpg" alt="Image 3">
+      <img src="4.jpg" alt="Image 4">
+      <img src="5.jpg" alt="Image 5">
+      <img src="6.jpg" alt="Image 6">
+    </div>
   </div>
 
 </body>
