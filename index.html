@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>aroruabllx</title>
-  <!-- Load a sophisticated Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" 
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
   <style>
     /* Basic reset */
     * {
@@ -19,14 +16,14 @@
 
     body {
       background: #f2f2f2;
-      font-family: 'Playfair Display', serif; /* A sophisticated serif font */
+      font-family: 'Playfair Display', serif;
       min-height: 100vh;
       padding: 20px;
     }
 
     .container {
       max-width: 1000px;
-      margin: 0 auto;   /* center horizontally */
+      margin: 0 auto;
       text-align: center;
     }
 
@@ -44,20 +41,21 @@
       gap: 15px;
     }
 
-    /* Each item (single or multi) */
+    /* Each item */
     .gallery-item {
       position: relative;
       overflow: hidden;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
     }
     .gallery-item:hover {
       transform: scale(1.03);
       box-shadow: 0 8px 15px rgba(0,0,0,0.15);
     }
 
-    /* Single image items: Show the image directly */
+    /* Image */
     .gallery-item img {
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -65,12 +63,11 @@
       display: block;
     }
 
-    /* Hover Overlay for text descriptions */
+    /* Overlay for descriptions */
     .overlay {
       position: absolute;
       bottom: 0;
-      left: 0; 
-      right: 0;
+      left: 0; right: 0;
       background: rgba(0,0,0,0.6);
       color: #fff;
       padding: 10px;
@@ -82,94 +79,6 @@
     .gallery-item:hover .overlay {
       opacity: 1;
     }
-
-    /* Hide multi-image slides by default in the main layout */
-    /* We'll show them inside a modal instead */
-    .multi .slides {
-      display: none;
-    }
-
-    /* ========== MODAL STYLES (for multi-image carousel) ========== */
-    .modal {
-      position: fixed;
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      display: none; /* Hidden by default */
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-    .modal.open {
-      display: flex; /* Show the modal when open */
-    }
-    .modal-content {
-      position: relative;
-      max-width: 80%;
-      max-height: 80%;
-      background: #fff;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    /* Carousel container inside modal */
-    .carousel {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-    .carousel img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none; /* Hide all slides initially */
-    }
-    .carousel img.active {
-      display: block; /* Show the active slide */
-    }
-
-    /* Nav arrows */
-    .nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 10px 20px;
-      background: rgba(0,0,0,0.4);
-      color: #fff;
-      font-size: 1.5rem;
-      border-radius: 3px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .nav-btn:hover {
-      background: rgba(0,0,0,0.7);
-    }
-    .nav-btn.left {
-      left: 10px;
-    }
-    .nav-btn.right {
-      right: 10px;
-    }
-
-    /* Close button */
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.4);
-      color: #fff;
-      font-size: 1.2rem;
-      padding: 5px 10px;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-    .close-btn:hover {
-      background: rgba(0,0,0,0.7);
-    }
   </style>
 </head>
 <body>
@@ -178,173 +87,40 @@
     <h1>aroruabllx</h1>
     <div class="gallery">
 
-      <!-- Single-image example (hover overlay, audio on hover) -->
-      <div 
-        class="gallery-item" 
-        data-audio="watersofmarch.mp3" 
-        data-description="Single image overlay text.">
+      <!-- Single-image example -->
+      <div class="gallery-item" data-description="Single image post">
         <img src="1.jpg" alt="Image 1">
-        <div class="overlay"></div>
+        <div class="overlay">Single image post</div>
       </div>
 
-      <!-- Multi-image example: We'll show the extra images in a modal. 
-           data-slides: a comma-separated list of image filenames
-           data-audio: audio to play while modal is open
-      -->
+      <!-- Multi-image post (redirects to gallery.html with query parameters) -->
       <div 
         class="gallery-item multi" 
-        data-slides="2.jpg,3.jpg,4.jpg" 
-        data-audio="watersofmarch.mp3"
-        data-description="Click to open carousel.">
-        <img src="2.jpg" alt="Thumbnail for multi-image post">
-        <div class="overlay"></div>
-        <!-- The .slides div won't be displayed directly in the grid.
-             We'll parse data-slides and load them into a modal. -->
-        <div class="slides">
-          <img src="2.jpg" alt="Slide 1">
-          <img src="3.jpg" alt="Slide 2">
-          <img src="4.jpg" alt="Slide 3">
-        </div>
+        data-images="2a.jpg,2b.jpg,2c.jpg" 
+        data-audio="audio2.mp3"
+        data-title="Multi-Image Post">
+        <img src="2a.jpg" alt="Thumbnail">
+        <div class="overlay">Click to open</div>
       </div>
 
-      <!-- Add as many items (single or multi) as needed -->
-
-    </div>
-  </div>
-
-  <!-- ========== MODAL FOR MULTI-IMAGE CAROUSEL ========== -->
-  <div class="modal" id="multiModal">
-    <div class="modal-content">
-      <span class="close-btn">X</span>
-      <div class="carousel" id="carouselContainer">
-        <!-- Slides get injected here dynamically -->
-      </div>
-      <span class="nav-btn left" id="prevBtn">←</span>
-      <span class="nav-btn right" id="nextBtn">→</span>
+      <!-- Add more gallery items as needed -->
+      
     </div>
   </div>
 
   <script>
-    // Reusable audio object
-    const audioPlayer = new Audio();
-    audioPlayer.preload = 'auto';
-
-    // SINGLE IMAGE HOVER: play/pause audio + overlay
-    document.querySelectorAll('.gallery-item:not(.multi)').forEach(item => {
-      const audioSrc = item.getAttribute('data-audio');
-      const overlayDiv = item.querySelector('.overlay');
-      const description = item.getAttribute('data-description') || '';
-
-      overlayDiv.textContent = description;
-
-      // Start audio on hover
-      item.addEventListener('mouseover', () => {
-        if (audioSrc) {
-          audioPlayer.src = audioSrc;
-          audioPlayer.play().catch(err => console.warn(err));
-        }
-      });
-      // Stop audio on mouse out
-      item.addEventListener('mouseout', () => {
-        audioPlayer.pause();
-        audioPlayer.currentTime = 0;
-      });
-    });
-
-    // MULTI-IMAGE (MODAL) LOGIC
-    const multiItems = document.querySelectorAll('.gallery-item.multi');
-    const modal = document.getElementById('multiModal');
-    const closeBtn = modal.querySelector('.close-btn');
-    const carouselContainer = document.getElementById('carouselContainer');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-
-    let currentSlideIndex = 0;
-    let slidesInModal = [];
-    let multiAudioSrc = '';
-
-    // Utility: Show a given slide index
-    function showSlide(index) {
-      slidesInModal.forEach((img, i) => {
-        img.classList.toggle('active', i === index);
-      });
-    }
-
-    // Open the modal with slides
-    function openModal(slideSrcArray, audioSrc) {
-      // Clear out old slides
-      carouselContainer.innerHTML = '';
-      slidesInModal = [];
-
-      // Create new <img> for each slide
-      slideSrcArray.forEach((src, i) => {
-        const img = document.createElement('img');
-        img.src = src.trim();
-        // Show first image by default
-        if (i === 0) img.classList.add('active');
-        carouselContainer.appendChild(img);
-        slidesInModal.push(img);
-      });
-
-      // Reset slide index
-      currentSlideIndex = 0;
-      multiAudioSrc = audioSrc || '';
-
-      // Show modal
-      modal.classList.add('open');
-
-      // Play audio
-      if (multiAudioSrc) {
-        audioPlayer.src = multiAudioSrc;
-        audioPlayer.play().catch(err => console.warn(err));
-      }
-    }
-
-    // Close the modal
-    function closeModal() {
-      modal.classList.remove('open');
-      // Stop and reset audio
-      audioPlayer.pause();
-      audioPlayer.currentTime = 0;
-    }
-
-    // Clicking each multi item to open the modal
-    multiItems.forEach(item => {
-      const overlayDiv = item.querySelector('.overlay');
-      const description = item.getAttribute('data-description') || '';
-      overlayDiv.textContent = description;
-
+    document.querySelectorAll('.multi').forEach(item => {
       item.addEventListener('click', () => {
-        const slidesStr = item.getAttribute('data-slides') || '';
-        const audioSrc = item.getAttribute('data-audio');
-        const slidesArray = slidesStr.split(',');
-        if (slidesArray.length > 0) {
-          openModal(slidesArray, audioSrc);
-        }
+        const images = item.getAttribute('data-images');
+        const audio = item.getAttribute('data-audio') || '';
+        const title = item.getAttribute('data-title') || 'Gallery';
+
+        // Construct URL for gallery.html with query parameters
+        const url = `gallery.html?images=${encodeURIComponent(images)}&audio=${encodeURIComponent(audio)}&title=${encodeURIComponent(title)}`;
+        window.location.href = url;
       });
-    });
-
-    // Modal controls
-    closeBtn.addEventListener('click', closeModal);
-
-    prevBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      currentSlideIndex = (currentSlideIndex - 1 + slidesInModal.length) % slidesInModal.length;
-      showSlide(currentSlideIndex);
-    });
-
-    nextBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      currentSlideIndex = (currentSlideIndex + 1) % slidesInModal.length;
-      showSlide(currentSlideIndex);
-    });
-
-    // Optional: close modal if user clicks outside content
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
     });
   </script>
+
 </body>
 </html>
