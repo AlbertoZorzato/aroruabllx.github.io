@@ -2,79 +2,135 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>aroruabllx</title>
+  <title>Interactive Image Gallery</title>
   <style>
-    /* Reset */
+    /* Basic reset */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
-    /* Body style */
     body {
-      background: #f2f2f2;
-      color: #333;
       font-family: Arial, sans-serif;
+      background: #f2f2f2;
       min-height: 100vh;
       margin: 0;
       padding: 20px;
     }
-
-    /* Wrapper to center content */
     .container {
       max-width: 1000px;
-      margin: 0 auto;  /* This centers the container */
+      margin: 0 auto;
       text-align: center;
     }
-
-    /* Title */
     h1 {
       margin-bottom: 30px;
       font-weight: 400;
-      letter-spacing: 1px;
       color: #444;
     }
-
-    /* Gallery container */
+    /* Gallery layout */
     .gallery {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
-      width: 100%;
     }
-
-    /* Images */
-    .gallery img {
+    /* Each item wraps the image + overlay text */
+    .gallery-item {
+      position: relative; /* needed for overlay positioning */
+      overflow: hidden;
+    }
+    /* The image itself */
+    .gallery-item img {
       width: 100%;
       aspect-ratio: 1/1;
       object-fit: cover;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: block;
     }
-
-    /* Hover effect */
-    .gallery img:hover {
+    /* Hover effect on the image */
+    .gallery-item:hover img {
       transform: scale(1.03);
       box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+    /* Tooltip text overlay (hidden by default) */
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none; /* So it doesn't block the hover */
+    }
+    /* Show overlay on hover */
+    .gallery-item:hover .overlay {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>aroruabllx</h1>
+    <h1>Image Gallery</h1>
     <div class="gallery">
-      <!-- Replace with 1.jpg, 2.jpg, etc. -->
-      <img src="1.jpg" alt="Image 1">
-      <img src="2.jpg" alt="Image 2">
-      <img src="3.jpg" alt="Image 3">
-      <img src="4.jpg" alt="Image 4">
-      <img src="5.jpg" alt="Image 5">
-      <img src="6.jpg" alt="Image 6">
+      <!-- Example gallery items -->
+      <div class="gallery-item" data-audio="audio1.mp3" data-description="Description of Image 1">
+        <img src="1.jpg" alt="Image 1">
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item" data-audio="audio2.mp3" data-description="Description of Image 2">
+        <img src="2.jpg" alt="Image 2">
+        <div class="overlay"></div>
+      </div>
+      <div class="gallery-item" data-audio="audio3.mp3" data-description="Description of Image 3">
+        <img src="3.jpg" alt="Image 3">
+        <div class="overlay"></div>
+      </div>
+      <!-- Add more gallery-item blocks as needed -->
     </div>
   </div>
 
+  <script>
+    // Create a single Audio object to reuse
+    const audioPlayer = new Audio();
+    audioPlayer.preload = 'auto';
+
+    // Get all gallery items
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    galleryItems.forEach(item => {
+      const overlayDiv = item.querySelector('.overlay');
+      
+      // Grab the data-* attributes
+      const audioSrc = item.getAttribute('data-audio');
+      const description = item.getAttribute('data-description');
+
+      // Insert description text into overlay
+      overlayDiv.textContent = description;
+
+      // On hover (mouseover), play the music
+      item.addEventListener('mouseover', () => {
+        // Set the audio src, play
+        if (audioSrc) {
+          audioPlayer.src = audioSrc;
+          audioPlayer.play().catch(err => {
+            // Some browsers block play() without user-initiated click
+            console.warn('Audio play blocked:', err);
+          });
+        }
+      });
+
+      // On mouseout, pause the music
+      item.addEventListener('mouseout', () => {
+        audioPlayer.pause();
+        // If you also want to reset playback position:
+        audioPlayer.currentTime = 0;
+      });
+    });
+  </script>
 </body>
 </html>
