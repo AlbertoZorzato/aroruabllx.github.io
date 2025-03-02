@@ -184,25 +184,27 @@
       document.getElementById('lightbox').classList.add('active');
     }
 
-    // Close lightbox when clicking outside image
-    document.getElementById('closeLightbox').addEventListener('click', closeLightbox);
-    document.getElementById('lightbox').addEventListener('click', (e) => {
-      if (e.target !== document.getElementById('lightboxImage')) {
-        closeLightbox();
-      }
-    });
-
     function closeLightbox() {
       document.getElementById('lightbox').classList.remove('active');
     }
 
-    // Navigation Arrows
-    document.getElementById('prevImage').addEventListener('click', () => {
+    // Close lightbox when clicking outside the image
+    document.getElementById('closeLightbox').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target !== document.getElementById('lightboxImage') && !e.target.classList.contains('nav-arrow')) {
+        closeLightbox();
+      }
+    });
+
+    // Navigation Arrows (prevent lightbox from closing)
+    document.getElementById('prevImage').addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevents lightbox from closing
       currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
       openLightbox();
     });
 
-    document.getElementById('nextImage').addEventListener('click', () => {
+    document.getElementById('nextImage').addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevents lightbox from closing
       currentImageIndex = (currentImageIndex + 1) % images.length;
       openLightbox();
     });
