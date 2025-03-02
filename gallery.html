@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gallery - aroruabllx</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f2f2f2;
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-weight: 500;
+      color: #444;
+      letter-spacing: 1px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* Back button */
+    .back-btn {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 15px;
+      background: #444;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    .back-btn:hover {
+      background: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1 id="galleryTitle">Gallery</h1>
+    <div class="gallery" id="galleryContainer"></div>
+    <a href="index.html" class="back-btn">← Back to Main</a>
+  </div>
+
+  <script>
+    // Extract query parameters
+    const params = new URLSearchParams(window.location.search);
+    const images = params.get('images') ? params.get('images').split(',') : [];
+    const audioSrc = params.get('audio') || '';
+    const title = params.get('title') || 'Gallery';
+
+    // Set title
+    document.getElementById('galleryTitle').textContent = title;
+
+    // Insert images into the gallery
+    const galleryContainer = document.getElementById('galleryContainer');
+    images.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src.trim();
+      galleryContainer.appendChild(img);
+    });
+
+    // Play audio if available
+    if (audioSrc) {
+      const audioPlayer = new Audio(audioSrc);
+      audioPlayer.loop = true; // Loop background music
+      audioPlayer.play().catch(err => console.warn('Audio play blocked:', err));
+    }
+  </script>
+
+</body>
+</html>
