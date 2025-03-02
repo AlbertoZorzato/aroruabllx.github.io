@@ -183,12 +183,9 @@
   </div>
 
   <script>
-    // Image Data (Title, Description)
-    const imageData = [
+    const galleryData = [
       { src: "1.jpg", title: "Untitled Artwork", details: "Unknown Artist, 2024" },
-      { src: "2a.jpg", title: "Abstract Composition", details: "Digital Art, 2023" },
-      { src: "2b.jpg", title: "Monochrome Study", details: "Oil on Canvas, 2019" },
-      { src: "2c.jpg", title: "Urban Decay", details: "Photography, 2021" }
+      { src: "2a.jpg", title: "Abstract Composition", details: "Digital Art, 2023", multi: true, images: "2a.jpg,2b.jpg,2c.jpg", audio: "watersofmarch.mp3" }
     ];
 
     const galleryContainer = document.getElementById("galleryContainer");
@@ -198,8 +195,7 @@
 
     let currentImageIndex = 0;
 
-    // Create Gallery
-    imageData.forEach((data, index) => {
+    galleryData.forEach((data, index) => {
       const item = document.createElement("div");
       item.classList.add("gallery-item");
       const img = document.createElement("img");
@@ -208,14 +204,23 @@
       item.appendChild(img);
       galleryContainer.appendChild(item);
 
-      img.addEventListener("click", () => {
-        currentImageIndex = index;
-        openLightbox();
-      });
+      if (data.multi) {
+        // Redirect to `gallery.html`
+        item.addEventListener("click", () => {
+          const url = `gallery.html?images=${encodeURIComponent(data.images)}&audio=${encodeURIComponent(data.audio)}&title=${encodeURIComponent(data.title)}`;
+          window.location.href = url;
+        });
+      } else {
+        // Open single-image lightbox
+        img.addEventListener("click", () => {
+          currentImageIndex = index;
+          openLightbox();
+        });
+      }
     });
 
     function openLightbox() {
-      const data = imageData[currentImageIndex];
+      const data = galleryData[currentImageIndex];
       lightboxImage.src = data.src;
       imageDetails.innerHTML = `<strong>${data.title}</strong><br>${data.details}`;
       lightbox.classList.add("active");
@@ -226,19 +231,13 @@
     }
 
     document.getElementById("closeLightbox").addEventListener("click", closeLightbox);
-    document.getElementById("lightbox").addEventListener("click", (e) => {
-      if (e.target !== lightboxImage && !e.target.classList.contains("nav-arrow")) {
-        closeLightbox();
-      }
-    });
-
     document.getElementById("prevImage").addEventListener("click", () => {
-      currentImageIndex = (currentImageIndex - 1 + imageData.length) % imageData.length;
+      currentImageIndex = (currentImageIndex - 1 + galleryData.length) % galleryData.length;
       openLightbox();
     });
 
     document.getElementById("nextImage").addEventListener("click", () => {
-      currentImageIndex = (currentImageIndex + 1) % imageData.length;
+      currentImageIndex = (currentImageIndex + 1) % galleryData.length;
       openLightbox();
     });
   </script>
