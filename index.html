@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>aroruabllx</title>
+  <!-- Load a sophisticated Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" 
+    rel="stylesheet">
   <style>
     /* Basic reset */
     * {
@@ -10,65 +16,120 @@
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
-      font-family: Arial, sans-serif;
       background: #f2f2f2;
+      font-family: 'Playfair Display', serif; /* A sophisticated serif font */
       min-height: 100vh;
-      margin: 0;
       padding: 20px;
     }
+
     .container {
       max-width: 1000px;
-      margin: 0 auto;
+      margin: 0 auto;   /* center horizontally */
       text-align: center;
     }
+
+    /* Page/Gallery Title */
     h1 {
       margin-bottom: 30px;
-      font-weight: 400;
+      font-weight: 500;
       color: #444;
+      letter-spacing: 1px;
     }
-    /* Gallery layout */
+
+    /* Gallery Grid */
     .gallery {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
     }
-    /* Each item wraps the image + overlay text */
+
+    /* Shared styles for single or multi items */
     .gallery-item {
-      position: relative; /* needed for overlay positioning */
+      position: relative;
       overflow: hidden;
-    }
-    /* The image itself */
-    .gallery-item img {
-      width: 100%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      display: block;
     }
-    /* Hover effect on the image */
-    .gallery-item:hover img {
+    .gallery-item:hover {
       transform: scale(1.03);
       box-shadow: 0 8px 15px rgba(0,0,0,0.15);
     }
-    /* Tooltip text overlay (hidden by default) */
+
+    /* Single-image items */
+    .gallery-item img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Overlay for text descriptions */
     .overlay {
       position: absolute;
       bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 10px;
+      left: 0; right: 0;
       background: rgba(0,0,0,0.6);
       color: #fff;
+      padding: 10px;
       opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none; /* So it doesn't block the hover */
+      transition: opacity 0.3s;
+      pointer-events: none;
+      font-size: 0.9rem;
     }
-    /* Show overlay on hover */
+    /* Show overlay on hover if there's text inside */
     .gallery-item:hover .overlay {
       opacity: 1;
+    }
+
+    /* MULTI-IMAGE (carousel) specific styles */
+    .multi {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .multi .slides {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;  /* Keep square shape */
+    }
+    .multi .slides img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;       /* Hide all slides by default */
+    }
+    .multi .slides img.active {
+      display: block;      /* Show only the active slide */
+    }
+    /* Slide controls (arrows) */
+    .multi .controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      pointer-events: none; /* Let mouseover pass through */
+    }
+    .multi .controls span {
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      pointer-events: auto; /* Re-enable for clicking */
+      user-select: none;
+      font-size: 1.2rem;
+      transition: background 0.2s;
+    }
+    .multi .controls span:hover {
+      background: rgba(0,0,0,0.6);
     }
   </style>
 </head>
@@ -77,58 +138,94 @@
   <div class="container">
     <h1>aroruabllx</h1>
     <div class="gallery">
-      <!-- Example gallery items -->
-      <div class="gallery-item" data-audio="watersofmarch.mp3" data-description="Waters of March">
-        <img src="1.jpg" alt="Image 1">
+
+      <!-- SINGLE-IMAGE EXAMPLE -->
+      <!-- data-audio: the mp3 or audio file to play on hover -->
+      <!-- data-description: the text to show in overlay -->
+      <div 
+        class="gallery-item" 
+        data-audio="audio1.mp3" 
+        data-description="A single-image post description.">
+        <img src="1.jpg" alt="Single Image">
         <div class="overlay"></div>
       </div>
-      <div class="gallery-item" data-audio="audio2.mp3" data-description="Micione">
-        <img src="2.jpg" alt="Image 2">
+
+      <!-- MULTI-IMAGE CAROUSEL EXAMPLE -->
+      <!-- When hovered, user can slide between multiple images -->
+      <div class="gallery-item multi" data-audio="audio2.mp3">
+        <div class="slides">
+          <img src="2a.jpg" alt="Image 2a" class="active">
+          <img src="2b.jpg" alt="Image 2b">
+          <img src="2c.jpg" alt="Image 2c">
+        </div>
         <div class="overlay"></div>
+        <div class="controls">
+          <span class="prev">←</span>
+          <span class="next">→</span>
+        </div>
       </div>
-      <div class="gallery-item" data-audio="audio3.mp3" data-description="Ti amo <3">
-        <img src="3.jpg" alt="Image 3">
-        <div class="overlay"></div>
-      </div>
-      <!-- Add more gallery-item blocks as needed -->
+
+      <!-- Add more gallery items (single or multi) as you like... -->
+
     </div>
   </div>
 
   <script>
-    // Create a single Audio object to reuse
+    // ----- Single reusable audio player -----
     const audioPlayer = new Audio();
     audioPlayer.preload = 'auto';
 
-    // Get all gallery items
-    const galleryItems = document.querySelectorAll('.gallery-item');
-
-    galleryItems.forEach(item => {
-      const overlayDiv = item.querySelector('.overlay');
-      
-      // Grab the data-* attributes
+    // ----- Handle all gallery items -----
+    document.querySelectorAll('.gallery-item').forEach(item => {
       const audioSrc = item.getAttribute('data-audio');
-      const description = item.getAttribute('data-description');
+      const overlayDiv = item.querySelector('.overlay');
+      const description = item.getAttribute('data-description') || '';
+      
+      // If there's a description, show it in overlay
+      if (description) {
+        overlayDiv.textContent = description;
+      }
 
-      // Insert description text into overlay
-      overlayDiv.textContent = description;
-
-      // On hover (mouseover), play the music
+      // On hover, play the associated audio (if any)
       item.addEventListener('mouseover', () => {
-        // Set the audio src, play
         if (audioSrc) {
           audioPlayer.src = audioSrc;
           audioPlayer.play().catch(err => {
-            // Some browsers block play() without user-initiated click
-            console.warn('Audio play blocked:', err);
+            console.warn('Audio play blocked by browser:', err);
           });
         }
       });
-
-      // On mouseout, pause the music
+      // On mouse out, pause and reset
       item.addEventListener('mouseout', () => {
         audioPlayer.pause();
-        // If you also want to reset playback position:
         audioPlayer.currentTime = 0;
+      });
+    });
+
+    // ----- Handle MULTI-IMAGE slides (carousel) -----
+    document.querySelectorAll('.gallery-item.multi').forEach(multiItem => {
+      const slides = multiItem.querySelectorAll('.slides img');
+      const prevBtn = multiItem.querySelector('.prev');
+      const nextBtn = multiItem.querySelector('.next');
+      let currentIndex = 0;
+
+      // Show only the currentIndex image
+      function showSlide(index) {
+        slides.forEach((img, i) => {
+          img.classList.toggle('active', i === index);
+        });
+      }
+
+      // Next/Prev button clicks
+      prevBtn.addEventListener('click', e => {
+        e.stopPropagation(); // Prevent triggering mouseout
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        showSlide(currentIndex);
+      });
+      nextBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
       });
     });
   </script>
