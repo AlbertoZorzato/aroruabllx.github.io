@@ -68,7 +68,7 @@
       background: #222;
     }
 
-    /* Lightbox Mode */
+    /* LIGHTBOX */
     .lightbox {
       position: fixed;
       top: 0; 
@@ -95,7 +95,7 @@
       display: flex; /* Show when active */
     }
 
-    /* Close button for Lightbox */
+    /* Close Button */
     .close-btn {
       position: absolute;
       top: 15px;
@@ -108,11 +108,33 @@
       border-radius: 5px;
       transition: background 0.3s;
     }
-
     .close-btn:hover {
       background: rgba(255, 255, 255, 0.5);
     }
 
+    /* Navigation Arrows */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+      user-select: none;
+    }
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+    .nav-arrow.left {
+      left: 20px;
+    }
+    .nav-arrow.right {
+      right: 20px;
+    }
   </style>
 </head>
 <body>
@@ -123,10 +145,12 @@
     <a href="index.html" class="back-btn">← Back</a>
   </div>
 
-  <!-- Lightbox Container (Appears when clicking an image) -->
+  <!-- LIGHTBOX CONTAINER (For Full-Screen Images) -->
   <div class="lightbox" id="lightbox">
     <span class="close-btn" id="closeLightbox">X</span>
+    <span class="nav-arrow left" id="prevImage">←</span>
     <img id="lightboxImage" src="" alt="Zoomed Image">
+    <span class="nav-arrow right" id="nextImage">→</span>
   </div>
 
   <script>
@@ -141,27 +165,46 @@
 
     // Insert images into the gallery
     const galleryContainer = document.getElementById('galleryContainer');
-    images.forEach(src => {
+    let currentImageIndex = 0;
+
+    images.forEach((src, index) => {
       const img = document.createElement('img');
       img.src = src.trim();
       galleryContainer.appendChild(img);
 
       // Click event to open lightbox
       img.addEventListener('click', () => {
-        document.getElementById('lightboxImage').src = img.src;
-        document.getElementById('lightbox').classList.add('active');
+        currentImageIndex = index;
+        openLightbox();
       });
     });
 
-    // Lightbox closing logic
-    document.getElementById('closeLightbox').addEventListener('click', () => {
-      document.getElementById('lightbox').classList.remove('active');
-    });
+    function openLightbox() {
+      document.getElementById('lightboxImage').src = images[currentImageIndex].trim();
+      document.getElementById('lightbox').classList.add('active');
+    }
 
+    // Close lightbox when clicking outside image
+    document.getElementById('closeLightbox').addEventListener('click', closeLightbox);
     document.getElementById('lightbox').addEventListener('click', (e) => {
       if (e.target !== document.getElementById('lightboxImage')) {
-        document.getElementById('lightbox').classList.remove('active');
+        closeLightbox();
       }
+    });
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+
+    // Navigation Arrows
+    document.getElementById('prevImage').addEventListener('click', () => {
+      currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+      openLightbox();
+    });
+
+    document.getElementById('nextImage').addEventListener('click', () => {
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      openLightbox();
     });
 
     // Play background music if available
