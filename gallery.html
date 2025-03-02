@@ -9,7 +9,8 @@
   <style>
     /* General Styles */
     body {
-      background: #f2f2f2;
+      background: #121212;
+      color: #e0e0e0;
       font-family: 'Playfair Display', serif;
       text-align: center;
       min-height: 100vh;
@@ -25,7 +26,7 @@
 
     h1 {
       font-weight: 500;
-      color: #444;
+      color: #fff;
       letter-spacing: 1px;
     }
 
@@ -42,14 +43,14 @@
       aspect-ratio: 1 / 1;
       object-fit: cover;
       border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 5px rgba(255,255,255,0.2);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
 
     .gallery img:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(255,255,255,0.3);
     }
 
     /* Back Button */
@@ -76,10 +77,14 @@
       width: 100%;
       height: 100%;
       background: rgba(0,0,0,0.9);
-      display: none; /* Hidden by default */
+      display: none;
       justify-content: center;
       align-items: center;
       z-index: 1000;
+    }
+
+    .lightbox.active {
+      display: flex;
     }
 
     .lightbox img {
@@ -87,12 +92,19 @@
       max-height: 90%;
       border-radius: 5px;
       box-shadow: 0 10px 25px rgba(255,255,255,0.3);
-      transition: transform 0.3s ease;
     }
 
-    /* Close Lightbox */
-    .lightbox.active {
-      display: flex; /* Show when active */
+    /* Museum-style label */
+    .museum-label {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      text-align: left;
     }
 
     /* Close Button */
@@ -108,6 +120,7 @@
       border-radius: 5px;
       transition: background 0.3s;
     }
+
     .close-btn:hover {
       background: rgba(255, 255, 255, 0.5);
     }
@@ -126,12 +139,15 @@
       transition: background 0.3s;
       user-select: none;
     }
+
     .nav-arrow:hover {
       background: rgba(255, 255, 255, 0.5);
     }
+
     .nav-arrow.left {
       left: 20px;
     }
+
     .nav-arrow.right {
       right: 20px;
     }
@@ -145,11 +161,12 @@
     <a href="index.html" class="back-btn">← Back</a>
   </div>
 
-  <!-- LIGHTBOX CONTAINER (For Full-Screen Images) -->
+  <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
     <span class="close-btn" id="closeLightbox">X</span>
     <span class="nav-arrow left" id="prevImage">←</span>
     <img id="lightboxImage" src="" alt="Zoomed Image">
+    <div class="museum-label" id="imageDetails"></div>
     <span class="nav-arrow right" id="nextImage">→</span>
   </div>
 
@@ -163,48 +180,48 @@
     // Set the title dynamically
     document.getElementById('galleryTitle').textContent = title;
 
-    // Insert images into the gallery
-    const galleryContainer = document.getElementById('galleryContainer');
+    const galleryContainer = document.getElementById("galleryContainer");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const imageDetails = document.getElementById("imageDetails");
+
     let currentImageIndex = 0;
 
+    // Create Gallery
     images.forEach((src, index) => {
-      const img = document.createElement('img');
-      img.src = src.trim();
-      galleryContainer.appendChild(img);
+      const item = document.createElement("img");
+      item.src = src.trim();
+      galleryContainer.appendChild(item);
 
-      // Click event to open lightbox
-      img.addEventListener('click', () => {
+      item.addEventListener("click", () => {
         currentImageIndex = index;
         openLightbox();
       });
     });
 
     function openLightbox() {
-      document.getElementById('lightboxImage').src = images[currentImageIndex].trim();
-      document.getElementById('lightbox').classList.add('active');
+      lightboxImage.src = images[currentImageIndex].trim();
+      imageDetails.innerHTML = `<strong>Title:</strong> Untitled <br> <strong>Year:</strong> 2024 <br> <strong>Medium:</strong> Digital`;
+      lightbox.classList.add("active");
     }
 
     function closeLightbox() {
-      document.getElementById('lightbox').classList.remove('active');
+      lightbox.classList.remove("active");
     }
 
-    // Close lightbox when clicking outside the image
-    document.getElementById('closeLightbox').addEventListener('click', closeLightbox);
-    document.getElementById('lightbox').addEventListener('click', (e) => {
-      if (e.target !== document.getElementById('lightboxImage') && !e.target.classList.contains('nav-arrow')) {
+    document.getElementById("closeLightbox").addEventListener("click", closeLightbox);
+    document.getElementById("lightbox").addEventListener("click", (e) => {
+      if (e.target !== lightboxImage && !e.target.classList.contains("nav-arrow")) {
         closeLightbox();
       }
     });
 
-    // Navigation Arrows (prevent lightbox from closing)
-    document.getElementById('prevImage').addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevents lightbox from closing
+    document.getElementById("prevImage").addEventListener("click", () => {
       currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
       openLightbox();
     });
 
-    document.getElementById('nextImage').addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevents lightbox from closing
+    document.getElementById("nextImage").addEventListener("click", () => {
       currentImageIndex = (currentImageIndex + 1) % images.length;
       openLightbox();
     });
@@ -212,7 +229,7 @@
     // Play background music if available
     if (audioSrc) {
       const audioPlayer = new Audio(audioSrc);
-      audioPlayer.loop = true; // Loop background music
+      audioPlayer.loop = true;
       audioPlayer.play().catch(err => console.warn('Audio play blocked:', err));
     }
   </script>
