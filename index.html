@@ -65,23 +65,6 @@
       display: block;
     }
 
-    /* Overlay for descriptions */
-    .overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      padding: 10px;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      font-size: 0.9rem;
-    }
-    .gallery-item:hover .overlay {
-      opacity: 1;
-    }
-
     /* Lightbox */
     .lightbox {
       position: fixed;
@@ -111,7 +94,7 @@
     .museum-label {
       position: absolute;
       top: 20px;
-      right: 20px;
+      right: 60px;
       background: rgba(0, 0, 0, 0.8);
       color: white;
       padding: 10px;
@@ -123,46 +106,19 @@
     /* Close Button */
     .close-btn {
       position: absolute;
-      top: 15px;
+      top: 20px;
       right: 20px;
       font-size: 1.5rem;
       color: white;
       cursor: pointer;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 5px 10px;
+      background: rgba(255, 0, 0, 0.8);
+      padding: 10px;
       border-radius: 5px;
       transition: background 0.3s;
     }
 
     .close-btn:hover {
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    /* Navigation Arrows */
-    .nav-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 2rem;
-      color: white;
-      cursor: pointer;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px 15px;
-      border-radius: 5px;
-      transition: background 0.3s;
-      user-select: none;
-    }
-
-    .nav-arrow:hover {
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    .nav-arrow.left {
-      left: 20px;
-    }
-
-    .nav-arrow.right {
-      right: 20px;
+      background: rgba(255, 0, 0, 1);
     }
   </style>
 </head>
@@ -176,10 +132,8 @@
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
     <span class="close-btn" id="closeLightbox">X</span>
-    <span class="nav-arrow left" id="prevImage">←</span>
     <img id="lightboxImage" src="" alt="Zoomed Image">
     <div class="museum-label" id="imageDetails"></div>
-    <span class="nav-arrow right" id="nextImage">→</span>
   </div>
 
   <script>
@@ -205,13 +159,11 @@
       galleryContainer.appendChild(item);
 
       if (data.multi) {
-        // Redirect to `gallery.html`
         item.addEventListener("click", () => {
           const url = `gallery.html?images=${encodeURIComponent(data.images)}&audio=${encodeURIComponent(data.audio)}&title=${encodeURIComponent(data.title)}`;
           window.location.href = url;
         });
       } else {
-        // Open single-image lightbox
         img.addEventListener("click", () => {
           currentImageIndex = index;
           openLightbox();
@@ -231,14 +183,10 @@
     }
 
     document.getElementById("closeLightbox").addEventListener("click", closeLightbox);
-    document.getElementById("prevImage").addEventListener("click", () => {
-      currentImageIndex = (currentImageIndex - 1 + galleryData.length) % galleryData.length;
-      openLightbox();
-    });
-
-    document.getElementById("nextImage").addEventListener("click", () => {
-      currentImageIndex = (currentImageIndex + 1) % galleryData.length;
-      openLightbox();
+    document.getElementById("lightbox").addEventListener("click", (e) => {
+      if (e.target !== lightboxImage && e.target !== imageDetails) {
+        closeLightbox();
+      }
     });
   </script>
 
