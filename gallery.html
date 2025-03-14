@@ -68,7 +68,22 @@
     .back-btn:hover {
       background: #222;
     }
+    function openLightbox() {
+  const currentSrc = images[currentImageIndex].trim();
+  
+  // Example logic: Customize details per image
+  const details = {
+    "2a.jpg": "Abstract Composition, Digital Art, 2023",
+    "2b.jpg": "Monochrome Study, Oil on Canvas, 2019",
+    "2c.jpg": "Urban Decay, Photography, 2021"
+  };
 
+  const labelText = details[currentSrc] || "Untitled, Unknown Artist, Year Unknown";
+  
+  lightboxImage.src = currentSrc;
+  imageDetails.innerHTML = `<strong>${labelText}</strong>`;
+  lightbox.classList.add("active");
+}
     /* LIGHTBOX */
     .lightbox {
       position: fixed;
