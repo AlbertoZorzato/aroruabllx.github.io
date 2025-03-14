@@ -125,6 +125,32 @@
       background: rgba(255, 0, 0, 1);
     }
 
+    /* Navigation Arrows */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+      user-select: none;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-arrow.left {
+      left: 20px;
+    }
+
+    .nav-arrow.right {
+      right: 20px;
+    }
   </style>
 </head>
 <body>
@@ -138,8 +164,10 @@
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
     <span class="close-btn" id="closeLightbox">X</span>
+    <span class="nav-arrow left" id="prevImage">←</span>
     <img id="lightboxImage" src="" alt="Zoomed Image">
     <div class="museum-label" id="imageDetails"></div>
+    <span class="nav-arrow right" id="nextImage">→</span>
   </div>
 
   <script>
@@ -183,11 +211,24 @@
 
     document.getElementById("closeLightbox").addEventListener("click", closeLightbox);
     
-    // Close lightbox when clicking outside the image (but not the museum label)
+    // Close lightbox when clicking outside the image
     document.getElementById("lightbox").addEventListener("click", (e) => {
-      if (e.target !== lightboxImage && e.target !== imageDetails) {
+      if (e.target !== lightboxImage && e.target !== imageDetails && !e.target.classList.contains("nav-arrow")) {
         closeLightbox();
       }
+    });
+
+    // Navigation Arrows
+    document.getElementById("prevImage").addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+      openLightbox();
+    });
+
+    document.getElementById("nextImage").addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      openLightbox();
     });
 
     // Play background music if available
